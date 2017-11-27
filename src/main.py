@@ -28,8 +28,6 @@ def main():
 		print("SVM's loaded")
 
 	except Exception as e:
-		print (str(e))
-		#ImgLandmarks = Processing.landmarkDetection(img01)
 		ml01 = ML.MachineLearning((8,8))
 		ml02 = ML.MachineLearning((12,12))
 		ml03 = ML.MachineLearning((16,16))
@@ -117,7 +115,6 @@ def createSets(parent_dir):
 			i += 1
 
 		
-	print(i)
 	random.shuffle(Training)
 	random.shuffle(Validation)
 

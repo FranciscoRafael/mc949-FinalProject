@@ -10,20 +10,10 @@ class PointsLandmark:
 
 
 # Currently this function is using SIFT keypoint detector as landmark detector
-def landmarkDetection(img):
-	gray= cv2.cvtColor(img,cv2.COLOR_BGR2GRAY)
-	     
-	sift = cv2.xfeatures2d.SIFT_create()
-	kp = sift.detect(gray,None)
-	     
-
-	#cv2.drawKeypoints(gray,kp, img)
+def landmarkDetection(x, y):
 	landmarks = []
-	for keyPoint in kp:
-		landmarks.append(PointsLandmark(keyPoint.pt[0], keyPoint.pt[1]))
-
-	#cv2.imwrite('sift_keypoints.jpg',img)
-	landmarks.sort(key=lambda elem: elem.x)
+	for i in range len(x):
+		landmarks.append(PointsLandmark(x[i], y[i]))
 
 	Final_FV = []
 	for point in landmarks:

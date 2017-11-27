@@ -251,18 +251,3 @@ class MachineLearning:
 
 		return np.array(new_data, np.float32)
 
-
-
-
-
-
-
-
-		
-
-
-
-
-
-		
-
