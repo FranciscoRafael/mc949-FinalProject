@@ -12,7 +12,7 @@ class PointsLandmark:
 # Currently this function is using SIFT keypoint detector as landmark detector
 def landmarkDetection(x, y):
 	landmarks = []
-	for i in range len(x):
+	for i in range (len(x)):
 		landmarks.append(PointsLandmark(x[i], y[i]))
 
 	Final_FV = []
