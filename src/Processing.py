@@ -15,6 +15,7 @@ def landmarkDetection(x, y):
 	for i in range (len(x)):
 		landmarks.append(PointsLandmark(x[i], y[i]))
 
+    print("landmark")
 	Final_FV = []
 	for point in landmarks:
 		cordX = round(point.x)
