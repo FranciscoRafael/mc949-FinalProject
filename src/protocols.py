@@ -18,11 +18,3 @@ def protocol_1(images, labels, query_image, labels_query, models):
 	pred04 = models[3].kNN(images, labels, query_image, 10, kNN_type='cossine')
 	pred05 = models[4].kNN(images, labels, query_image, 10, kNN_type='cossine')
 	pred06 = models[5].kNN(images, labels, query_image, 10, kNN_type='cossine')
-
-def protocol_2
-
-
-
-
-
-
