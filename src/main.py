@@ -7,6 +7,7 @@ import sklearn
 from sklearn import metrics
 from sklearn import decomposition
 from sklearn.externals import joblib
+import protocols
 
 def main():
 	current_dir =  os.path.abspath(os.path.dirname(__file__))
@@ -63,6 +64,8 @@ def main():
 		#print("Ground Truth: " + str(ValidationLabels[0]))
 		#pred = ml01.svm.predict(ValidationSet)
 	
+
+	'''
 	pred = ml01.Validation(ValidationSet, ValidationLabels, 'svm')
 	__test_metrics(ValidationLabels, pred)
 	pred = ml02.Validation(ValidationSet, ValidationLabels, 'svm')
@@ -75,8 +78,17 @@ def main():
 	__test_metrics(ValidationLabels, pred)
 	pred = ml06.Validation(ValidationSet, ValidationLabels, 'svm')
 	__test_metrics(ValidationLabels, pred)
-
-
+	'''
+	print("protocol 0")
+	#pred = ml01.kNN(TrainingSet, TrainingLabels, ValidationSet, 10)
+	#print(len(pred), len(ValidationLabels))
+	#print(pred)
+	#pred = protocols.protocol_0(TrainingSet, TrainingLabels, ValidationSet, ValidationLabels, [ml01, ml02, ml03, ml04, ml05, ml06])
+	print("protocol 1")
+	#protocols.protocol_1(TrainingSet, TrainingLabels, ValidationSet, ValidationLabels, [ml01, ml02, ml03, ml04, ml05, ml06]) 
+	print("protocol 2")
+	pred = protocols.protocol_2(ValidationSet, ValidationLabels, [ml01, ml02, ml03, ml04, ml05, ml06])
+	__test_metrics(ValidationLabels, pred)
 	'''
 	resp = ml01.kNN(TrainingSet, TrainingLabels, ValidationSet[0], 10, kNN_type='cossine')
 	print(resp, ValidationLabels[0])

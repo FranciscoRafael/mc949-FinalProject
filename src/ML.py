@@ -8,6 +8,7 @@ from sklearn import linear_model
 from sklearn import metrics
 from sklearn import grid_search
 from sklearn import multiclass
+from sklearn.neighbors import KNeighborsClassifier
 # parameters for grid search
 
 TUNED_PARAMETERS = [
@@ -105,13 +106,19 @@ class MachineLearning:
 		## --------------------------- ####
 
 	# it is necessary to implement the euclidian distance
-	def kNN(self, train_images, labels, test_image, num_classes, K=3, kNN_type='euclidian'):
+	def kNN(self, train_images, labels, test_images, num_classes, K=3, kNN_type='euclidian'):
 		
 		FVS = []
 		for img in train_images:
 			fv = Processing.HOG(img, self.cell_size)
 			FVS.append(np.array(fv))
 
+		
+		FVS_test = []
+		for img in test_images:
+			fv = Processing.HOG(img, self.cell_size)
+			FVS_test.append(np.array(fv))
+		
 		
 		if(self.mean == [] and self.std == []):
 			FV_norm = self.Train_Normalization(FVS)
@@ -122,12 +129,21 @@ class MachineLearning:
 		else:
 			FV_norm = self.ReduceDimension(FV_norm, 'test')
 
-		fv_test = Processing.HOG(test_image, self.cell_size)
-		fv_test = [np.array(fv_test)]
-		FV_test = self.Validation_Normalization(fv_test)
+		
+		try:
+			print(self.neigh)
+		except:
+			self.neigh = KNeighborsClassifier(n_neighbors=3)
+			self.neigh.fit(FV_norm, labels)
+		
+		
+		#FVS_test = [Processing.HOG(img, self.cell_size)]
+		FV_test = self.Validation_Normalization(FVS_test)
 		FV_test = self.ReduceDimension(FV_test, 'test')
-		print (FV_test)
+		#print (FV_test)
 
+		#voted_label = self.neigh.predict(FV_test)
+		
 		if(kNN_type == 'cossine'):
 			distances = []
 			for i in range(len(FV_norm)):
@@ -135,26 +151,22 @@ class MachineLearning:
 				distances.append([cossine, labels[i], i])
 
 			distances.sort(key=lambda x: x[0], reverse=True)
+			votes = [0]*num_classes
+			for j in range(K):
+				label = distances[j][1]
+				votes[label] += 1
+
+			voted_label = votes.index(max(votes))
 
 		elif(kNN_type == 'euclidian'):
-			distances = []
-			for i in range(len(FV_norm)):
-				euclidian = np.linalg.norm(FV_norm[i] - FV_test)
-				distances.append([euclidian, labels[i], i])
-
-			distances.sort(key=lambda x: x[0])
+			voted_label = self.neigh.predict(FV_test)
 
 		else:
 			print("Please, choose between 'euclidian' or 'cossine'")
 			exit()
+	
+
 		
-		votes = [0]*num_classes
-		for j in range(K):
-			label = distances[j][1]
-			votes[label] += 1
-
-		voted_label = votes.index(max(votes))
-
 		return voted_label
 
 	# apply PCA and/or LDA -- not done!
